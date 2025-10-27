@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>猜數字遊戲 - 簡約版</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                color: #333;
+                padding: 20px;
+            }
+
+            .game-container {
+                display: flex;
+                gap: 40px;
+                align-items: flex-start;
+                max-width: 900px;
+                width: 100%;
+            }
+
+            .left-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .right-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .game-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 30px;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .input-section {
+                background: white;
+                border-radius: 15px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 400px;
+                text-align: center;
+            }
+
+            .guessInput {
+                width: 100%;
+                padding: 15px 20px;
+                font-size: 1.2rem;
+                border: 2px solid #e0e6ed;
+                border-radius: 25px;
+                outline: none;
+                transition: all 0.3s ease;
+                text-align: center;
+                background: #f8f9fa;
+                margin-bottom: 20px;
+            }
+
+            .guessInput:focus {
+                border-color: #4a90e2;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            }
+
+            .btn {
+                background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+                color: white;
+                border: none;
+                padding: 15px 40px;
+                font-size: 1.1rem;
+                font-weight: 600;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+                margin-right: 10px;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            .clear-btn {
+                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+                box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            }
+
+            .clear-btn:hover {
+                box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+            }
+
+            .answer {
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 20px;
+                margin-top: 20px;
+                font-size: 1.1rem;
+                line-height: 1.5;
+                color: #2c3e50;
+                border-left: 4px solid #4a90e2;
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .keypad-section {
+                background: white;
+                border-radius: 15px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 450px;
+                text-align: center;
+            }
+
+            .keypad-title {
+                font-size: 1.2rem;
+                color: #2c3e50;
+                margin-bottom: 20px;
+                font-weight: 500;
+            }
+
+            .container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                width: 100%;
+            }
+
+            .number {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                border: 2px solid #e0e6ed;
+                color: #2c3e50;
+                height: 80px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.4rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                user-select: none;
+            }
+
+            .number:hover {
+                background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+                color: white;
+                border-color: #4a90e2;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+            }
+
+            .number:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+            }
+
+            .number:last-child {
+                grid-column: 2;
+            }
+
+            @media (max-width: 768px) {
+                .game-container {
+                    flex-direction: column;
+                    gap: 30px;
+                    align-items: center;
+                }
+
+                .left-section,
+                .right-section {
+                    width: 100%;
+                    max-width: 400px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .game-title {
+                    font-size: 2rem;
+                }
+
+                .input-section,
+                .keypad-section {
+                    padding: 20px;
+                }
+
+                .container {
+                    gap: 10px;
+                }
+
+                .number {
+                    height: 60px;
+                    font-size: 1.1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="game-title">🎯 猜數字遊戲</h1>
+
+        <div class="game-container">
+            <div class="left-section">
+                <div class="input-section">
+                    <input
+                        type="text"
+                        class="guessInput"
+                        placeholder="輸入你的猜測..."
+                    />
+                    <button class="btn guess-btn">猜猜看</button>
+                    <button class="btn clear-btn">清除</button>
+                    <div class="answer">請在1-100間猜一個數字</div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="keypad-section">
+                    <p class="keypad-title">📱 數字鍵盤</p>
+                    <div class="container">
+                        <div class="number" data-value="1">一</div>
+                        <div class="number" data-value="2">二</div>
+                        <div class="number" data-value="3">三</div>
+                        <div class="number" data-value="4">四</div>
+                        <div class="number" data-value="5">五</div>
+                        <div class="number" data-value="6">六</div>
+                        <div class="number" data-value="7">七</div>
+                        <div class="number" data-value="8">八</div>
+                        <div class="number" data-value="9">九</div>
+                        <div class="number" data-value="0">零</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let min = 1;
+            let max = 100;
+            let range = "1-100";
+            let answer = createNumber();
+
+            const guessInput = document.querySelector(".guessInput");
+            const answerArea = document.querySelector(".answer");
+            
+            document.querySelector(".guess-btn").addEventListener("click", handleGuess);
+
+            document.querySelector(".clear-btn").addEventListener("click", clearInput);
+
+            function handleGuess() {
+                const userGuess = parseInt(guessInput.value.trim());
+                
+
+                if (isNaN(userGuess) || guessInput.value.trim() === "") {
+                    answerArea.textContent = "輸入數字啦！";
+                    guessInput.value = "";
+                    return;
+                }
+
+
+                if (userGuess < min || userGuess > max) {
+                    answerArea.textContent = `輸入的數字請在 ${range} 範圍內`;
+                    guessInput.value = "";
+                    return;
+                }
+
+                if (userGuess === answer) {
+                    answerArea.textContent = `你猜對了！答案是 ${answer}，重新整理頁面再玩一次！`;
+
+                } else if (userGuess < answer) {
+                    min = userGuess ;
+                    updateRange();
+                    answerArea.textContent = `你輸入的是：${userGuess}，請在 ${range} 間再猜一次`;
+                } else {
+                    max = userGuess ;
+                    updateRange();
+                    answerArea.textContent = `你輸入的是：${userGuess}，請在 ${range} 間再猜一次`;
+                }
+                
+                guessInput.value = "";
+            }
+
+            function updateRange() {
+                range = `${min}-${max}`;
+            }
+
+            function clearInput() {
+                guessInput.value = "";
+            }
+
+            function createNumber() {
+                return Math.floor(Math.random() * 100) + 1;
+            }
+
+            document.querySelector(".container").addEventListener("click", function (e) {
+                if (e.target.classList.contains("number")) {
+                    const value = e.target.getAttribute("data-value");
+                    if (value !== null) {
+                        guessInput.value += value;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
